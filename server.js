@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");  // ✅ ADD THIS LINE
+const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
@@ -12,7 +12,6 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Health check
 app.get("/", (req, res) => {
   res.send("Restaurant backend running");
 });
@@ -35,13 +34,12 @@ app.use("/uploads", express.static("uploads"));
 
 console.log("mongo uri is :", process.env.MONGO_URI);
 
-// ✅ Move MongoDB connection BEFORE listen()
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
   .catch(err => console.error("❌ MongoDB error:", err));
 
-const PORT = process.env.PORT || 3000;  // ✅ Fallback port
+const PORT = process.env.PORT || 3000;  
 
 // ✅ Listen AFTER connection setup
 const server = app.listen(PORT, "0.0.0.0", () => {
